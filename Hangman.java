@@ -1,4 +1,5 @@
 package Hangman;
+import java.util.Arrays;
 import java.util.Scanner;
 public class Hangman {
     public static void main(String[] args) {
@@ -60,9 +61,7 @@ public class Hangman {
         System.out.println("Thank you for playing Hangman");
     }
     static char[] underscores(char[] arr){
-        for(int i  = 0; i < arr.length; i++){
-            arr[i] = '_';
-        }
+	    Arrays.fill(arr, '_');
         return arr;
     }
 
