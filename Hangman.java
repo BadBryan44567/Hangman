@@ -6,23 +6,24 @@ import java.util.Scanner;
 import java.util.Random;
 public class Hangman {
     public static void main(String[] args) {
+        System.out.println("\u001B[2J");
         Scanner sc = new Scanner(System.in);
         Hangman hangman = new Hangman();
         Random rand = new Random();
-        System.out.println(colors.BOLD_BLUE + "Welcome To Hangman! ~uwu~" + colors.RESET);
-        System.out.println("Here are the Categories: \n1. Chemistry\n2.Computers\nInput the category number: ");
+        System.out.printf("%70s%n", colors.BOLD_BLUE + "Welcome To Hangman! ~uwu~" + colors.RESET);
+        System.out.println("Here are the Categories: \n  1. Chemistry\n  2. Computers\nInput the category number: ");
         int category = sc.nextInt();
         String topic = switch(category){
             case 1 -> "chemistry";
             case 2 -> "computers";
-            default -> "Invalid Category.";
+            default -> throw new IllegalStateException(colors.BOLD_RED+ "Unexpected value: " + colors.RESET + category);
         };
 
         String[] words = new String[0];
         try{
             words = Dictionary(category);
         }catch (FileNotFoundException e){
-            System.out.println("An error occurred");
+            System.out.println(colors.BOLD_RED + "An error occurred" + colors.RESET);
             e.printStackTrace();
         }
 
@@ -34,9 +35,10 @@ public class Hangman {
     }
 
     void Play(String word, String category){
-        System.out.println("Hello Player ! ");
+        System.out.println("\u001B[2J");
+        System.out.printf("%70s%n", colors.BOLD_BLUE + "Hello Player ! " + colors.RESET);
         System.out.println("Your Category is: " + category);
-        System.out.println("Your Word is: " + word.length() + " Long");
+        System.out.println("Your Word is: " + word.length() + " letters long");
         Scanner sc = new Scanner(System.in);
         char[] temp = new char[word.length()];
 
@@ -73,7 +75,7 @@ public class Hangman {
                 break;
             }
             if(count == 6){
-                System.out.println("Game Lost. Try again.");
+                System.out.println(colors.RED_BACKGROUND + colors.BOLD_WHITE + "Game Lost. Try again. The word was : " + origWord + colors.RESET);
                 break;
             }
         }
@@ -138,7 +140,7 @@ public class Hangman {
         File dict = switch (category) {
 	        case 1 -> new File("chemistry.txt");
 	        case 2 -> new File("computers.txt");
-	        default -> throw new IllegalStateException("Unexpected value: " + category);
+	        default -> throw new IllegalStateException(colors.BOLD_RED+ "Unexpected value: " + colors.RESET + category);
         };
 
 	    Scanner reader  = new Scanner(dict);
