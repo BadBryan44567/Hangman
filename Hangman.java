@@ -9,7 +9,7 @@ public class Hangman {
         Scanner sc = new Scanner(System.in);
         Hangman hangman = new Hangman();
         Random rand = new Random();
-        System.out.println("Welcome To Hangman! ~uwu~");
+        System.out.println(colors.BOLD_BLUE + "Welcome To Hangman! ~uwu~" + colors.RESET);
         System.out.println("Here are the Categories: \n1. Chemistry\n2.Computers\nInput the category number: ");
         int category = sc.nextInt();
         String topic = switch(category){
@@ -49,7 +49,6 @@ public class Hangman {
             System.out.print("\f");
             System.out.println("Enter your guess ( in lower case ONLY ): ");
             char letter = sc.next().charAt(0);
-            System.out.println(letter);
             boolean flag = false;
 
             for (int i = 0; i < word.length(); i++) {
@@ -137,8 +136,8 @@ public class Hangman {
 
     static String[] Dictionary(int category) throws FileNotFoundException {
         File dict = switch (category) {
-	        case 1 -> new File("src/Hangman/chemistry.txt");
-	        case 2 -> new File("src/Hangman/computers.txt");
+	        case 1 -> new File("chemistry.txt");
+	        case 2 -> new File("computers.txt");
 	        default -> throw new IllegalStateException("Unexpected value: " + category);
         };
 
