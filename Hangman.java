@@ -1,22 +1,42 @@
 package Hangman;
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.Arrays;
 import java.util.Scanner;
+import java.util.Random;
 public class Hangman {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
         Hangman hangman = new Hangman();
-        System.out.println("Welcome Hangman! ~uwu~\nEnter a word for player to guess: ");
-        String word = sc.nextLine();
-        System.out.println("Enter Category of the word: ");
-        String category = sc.nextLine();
-        hangman.Play(word, category);
+        Random rand = new Random();
+        System.out.println("Welcome To Hangman! ~uwu~");
+        System.out.println("Here are the Categories: \n1. Chemistry\n2.Computers\nInput the category number: ");
+        int category = sc.nextInt();
+        String topic = switch(category){
+            case 1 -> "chemistry";
+            case 2 -> "computers";
+            default -> "Invalid Category.";
+        };
 
+        String[] words = new String[0];
+        try{
+            words = Dictionary(category);
+        }catch (FileNotFoundException e){
+            System.out.println("An error occurred");
+            e.printStackTrace();
+        }
+
+        String word = words[rand.nextInt(99)].toLowerCase();
+        System.out.println(word);
+
+        hangman.Play(word, topic);
         sc.close();
     }
 
     void Play(String word, String category){
         System.out.println("Hello Player ! ");
         System.out.println("Your Category is: " + category);
+        System.out.println("Your Word is: " + word.length() + " Long");
         Scanner sc = new Scanner(System.in);
         char[] temp = new char[word.length()];
 
@@ -27,7 +47,7 @@ public class Hangman {
 
         while (true) {
             System.out.print("\f");
-            System.out.println("Enter your guess: ");
+            System.out.println("Enter your guess ( in lower case ONLY ): ");
             char letter = sc.next().charAt(0);
             System.out.println(letter);
             boolean flag = false;
@@ -113,6 +133,30 @@ public class Hangman {
                 System.out.printf("%80s%n","************");
                 break;
         }
+    }
+
+    static String[] Dictionary(int category) throws FileNotFoundException {
+        File dict = switch (category) {
+	        case 1 -> new File("src/Hangman/chemistry.txt");
+	        case 2 -> new File("src/Hangman/computers.txt");
+	        default -> throw new IllegalStateException("Unexpected value: " + category);
+        };
+
+	    Scanner reader  = new Scanner(dict);
+        int count = 0;
+        while(reader.hasNextLine()){
+            String tempData  = reader.nextLine();
+            count++;
+        }
+        reader.close();
+        String[] words = new String[count];
+        Scanner newReader = new Scanner(dict);
+        for(int i = 0; i < count; i++ ){
+            words[i] = newReader.nextLine();
+        }
+
+        newReader.close();
+        return words;
     }
 
 }
